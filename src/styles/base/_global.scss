@@ -1,0 +1,37 @@
+//Global Styles
+body {
+    overflow-x: hidden;
+    font-weight: $medium;
+    background-color: $light;
+    font-family: helvetica;
+    color: $primary;
+    padding-bottom: 1.77rem;
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: $s4
+}
+
+h2, 
+h3 {
+    font-size: $s3;
+}
+
+a {
+    color: currentColor;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+:focus {
+    outline: 2px dotted;
+    outline-offset: 0.25rem;
+}
