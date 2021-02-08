@@ -53,6 +53,11 @@ export interface Feature {
 export interface WorldWide extends Stats {
   updated: number;
   cases: number;
+  affectedCountries: number;
+  todayCases: number;
+  todayDeaths: number;
+  todayRecovered: number;
+  active: number;
 }
 
 export interface StatisticsState {
