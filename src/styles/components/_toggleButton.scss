@@ -1,0 +1,32 @@
+[data-type="toggle"] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 2.5rem;
+  height: 1.25rem;
+  padding: 0.125rem;
+  background-color: lightblue;
+  border-radius: 10px;
+}
+
+[data-type="toggle"] > span {
+  height: 16px;
+}
+
+[data-type="toggle"] > .toggle__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0.125rem;
+  transform: translateY(-50%);
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: black;
+  pointer-events: none;
+  transition: left 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+[data-type="toggle"] > .toggle__thumb[data-toggle="true"] {
+  left: 1.467rem;
+}
