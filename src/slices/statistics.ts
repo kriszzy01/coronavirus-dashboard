@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getCountries, getWorldWide, getProvince } from "../api";
-import { customCountryPayload } from "../utils";
+
+import { customCountryPayload, initialStatistics } from "../utils";
 
 import {
   AppThunk,
@@ -9,20 +10,6 @@ import {
   WorldWide,
   Country,
 } from "../types";
-
-const initialState: StatisticsState = {
-  status: "idle",
-  error: null,
-  countries: {},
-  worldwide: {
-    recovered: 0,
-    deaths: 0,
-    updated: 0,
-    cases: 0,
-    confirmed: 0,
-  },
-  province: {},
-};
 
 const fetchStart = (state: StatisticsState) => {
   state.status = "pending";
@@ -40,7 +27,7 @@ const fetchFailure = (
 /****** Statistics Reducer ******/
 const statistics = createSlice({
   name: "statistics",
-  initialState,
+  initialState: initialStatistics,
   reducers: {
     /*****Province Statistics Reducers*****/
     fetchProvinceStart: fetchStart,
