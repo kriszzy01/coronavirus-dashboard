@@ -8,7 +8,7 @@ export const DataChart = () => {
   const [chartType, setChartType] = useState("bar");
 
   const historicalData = useSelector(getAllHistorical);
-  const chartData = historicalToChartData(historicalData.cases);
+  const chartData = historicalToChartData(historicalData.deaths);
 
   let chartRef = useRef();
 
