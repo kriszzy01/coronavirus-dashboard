@@ -1,0 +1,20 @@
+.card {
+  background-color: var(--color-neutral);
+  color: var(--color-dark);
+  padding: 1rem 0.5rem;
+  width: 170px;
+
+  h2 {
+    &.active {
+      color: var(--color-active);
+    }
+
+    &.recovered {
+      color: var(--color-recovered);
+    }
+
+    &.deaths {
+      color: var(--color-deaths);
+    }
+  }
+}
