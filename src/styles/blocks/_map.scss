@@ -1,13 +1,9 @@
 .leaflet-container {
-  background: rgb(2, 20, 34);
-  width: 100vw;
-  height: 400px;
+  background: var(--color-dark);
+  width: calc(100vw - 180px);
+  height: 500px;
   overflow: hidden;
   cursor: auto;
-
-  @media screen and (min-width: 48em) {
-    width: 50vw;
-  }
 
   .leaflet-popup-close-button {
     background-color: white;
@@ -21,20 +17,20 @@
   }
 
   .icon {
-    background: red;
+    background: var(--color-deaths);
     border-radius: 50%;
     opacity: 0.8;
   }
 
   .icon-active {
-    background: rgb(227, 139, 79);
+    background: var(--color-active);
   }
 
   .icon-tests {
-    background: rgb(115, 178, 255);
+    background: var(--color-primary);
   }
 
   .icon-ratio {
-    background: rgb(255, 255, 255);
+    background: var(--color-neutral);
   }
 }
