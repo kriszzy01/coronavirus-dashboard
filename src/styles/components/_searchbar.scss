@@ -1,0 +1,28 @@
+.searchbar {
+  position: relative;
+  flex-basis: 40%;
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  border-radius: 0.25rem;
+
+  > :first-child {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-light);
+    border-radius: 0.25rem;
+  }
+
+  &:focus-within {
+    /*flex-basis: 35%;*/
+    box-shadow: 0px 0px 0px 1px var(--color-primary);
+
+    svg {
+        >:last-child {
+            fill: var(--color-primary) 
+        }
+    }
+
+    @media screen and (max-width: 48em) {
+      /*flex-basis: 90%;*/
+    }
+  }
+}
