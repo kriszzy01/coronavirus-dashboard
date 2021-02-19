@@ -1,0 +1,67 @@
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useMap } from "react-leaflet";
+import { getProvince, getCountries, getMapData } from "../selectors";
+import { setMapData } from "../slices/map";
+
+import {
+  geoJsonToMarkers,
+  featuresToGeoJSON,
+  featuresToGeoJsonArray,
+} from "../utils";
+
+const tabItems = ["Cummulative", "Active", "Tests", "Case-Fatality Ratio"];
+
+export const MapControls: React.FC = () => {
+  const mapInstance = useMap(); //Instance of the map object
+  const dispatch = useDispatch();
+
+  const provinces = useSelector(getProvince);
+  const countries = useSelector(getCountries);
+  const activeData = useSelector(getMapData);
+
+  const provinceGeoJson = featuresToGeoJsonArray(provinces);
+  const countriesGeoJson = featuresToGeoJsonArray(countries);
+
+  const geoJsonArray =
+    activeData.includes("Cummulative") || activeData.includes("Ratio")
+      ? provinceGeoJson
+      : countriesGeoJson;
+
+  const locationsGeoJsonLayers = geoJsonToMarkers(
+    featuresToGeoJSON(geoJsonArray),
+    activeData
+  );
+
+  //App re-renders only when activeData changes, hence no need for dependency array
+  //since this is the intended behaviour
+  useEffect(() => {
+    locationsGeoJsonLayers.addTo(mapInstance);
+
+    return () => {
+      locationsGeoJsonLayers.removeFrom(mapInstance); //Clear all markers from map
+    };
+  });
+
+  return (
+    <div className="mapcontrols">
+      <div>
+        {tabItems.map((item) => (
+          <button type="button" onClick={() => dispatch(setMapData(item))}>
+            {item}
+          </button>
+        ))}
+      </div>
+
+      <button type="button" onClick={() => mapInstance.setView([20, 0], 2)}>
+        <svg width="20" height="20">
+          <path
+            fill="white"
+            d="M6.64 3.928C7.5 1.478 8.785 0 10 0c1.216 0 2.5 1.478 3.36 3.928H6.64zM6.75.544a10.022 10.022 0 00-4.688 3.384h3.072C5.484 2.72 6.03 1.576 6.75.544zM4.284 10c-.005-1.56.155-3.117.478-4.644H1.147a9.975 9.975 0 000 9.288h3.615A22.031 22.031 0 014.284 10zm1.432 0c-.01 1.563.163 3.121.515 4.644h7.538c.352-1.523.525-3.081.515-4.644a20.078 20.078 0 00-.515-4.644H6.23A20.078 20.078 0 005.716 10zm12.222-6.072A10.022 10.022 0 0013.25.544a11.522 11.522 0 011.616 3.384h3.072zM13.25 19.456a10.022 10.022 0 004.688-3.384h-3.072a11.522 11.522 0 01-1.616 3.384zM2.062 16.072a10.022 10.022 0 004.688 3.384 11.522 11.522 0 01-1.616-3.384H2.062zM15.238 5.356c.323 1.527.483 3.084.478 4.644a22.031 22.031 0 01-.478 4.644h3.615a9.975 9.975 0 000-9.288h-3.615zM6.64 16.072C7.5 18.522 8.784 20 10 20c1.216 0 2.5-1.478 3.36-3.928H6.64z"
+            fill-rule="nonzero"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  );
+};

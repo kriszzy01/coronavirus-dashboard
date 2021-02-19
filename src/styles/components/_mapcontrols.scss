@@ -1,0 +1,26 @@
+.mapcontrols {
+  > :first-child {
+    position: absolute;
+
+    [type="button"] {
+      transition: all 0.15s cubic-bezier(0.47, 0, 0.745, 0.715);
+      padding: 0.2rem;
+      background-color: var(--color-neutral);
+      color: var(--color-dark);
+      border: 0.125rem solid var(--color-neutral);
+      margin: 0.1rem 0.1rem 0;
+      border-radius: 0.25rem;
+
+      &:hover {
+        background-color: var(--color-light);
+        color: var(--color-neutral);
+      }
+    }
+  }
+
+  > :last-child {
+    position: absolute;
+    right: 0.5rem;
+    top: 1rem;
+  }
+}
