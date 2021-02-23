@@ -1,17 +1,22 @@
 import L from "leaflet";
 import { iconSizeByCases, commify, iconSizeByPercentage } from "./helpers";
 
-export function geoJsonToMarkers(geoJson, dataType) {
+const accessToken = process.env.REACT_APP_TOKEN;
+
+export const tileLayer = `https://api.mapbox.com/styles/v1/kriszzy01/ckkcxmtt12ax117mn75yqjd4a/tiles/256/{z}/{x}/{y}@2x?access_token=${accessToken}`;
+export const attribution =
+  'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+
+export function geoJsonToMarkers(geoJson, dataType, option) {
   return L.geoJSON(geoJson, {
-    pointToLayer: markerCreator(dataType),
+    pointToLayer: markerCreator(dataType, option),
   });
 }
 
-function markerCreator(dataType) {
+function markerCreator(dataType, targetDataFunction) {
   return (feature, latLng) => {
     const markerProps = getMarkerProps(feature, dataType);
-
-    return L.marker(latLng, {
+    const marker = L.marker(latLng, {
       icon: L.divIcon({
         className: `icon ${markerProps.class}`,
         iconSize:
@@ -19,7 +24,18 @@ function markerCreator(dataType) {
             ? iconSizeByPercentage(markerProps.size)
             : iconSizeByCases(markerProps.size),
       }),
-    }).bindPopup(markerProps.html);
+    });
+
+    marker.bindPopup(markerProps.html); //Add popup html markup
+    marker.bindTooltip(markerProps.html); //Add tooltil to display on marker hover
+
+    marker.on("click", ({ target: { _map: map, feature }, latlng }) => {
+      targetDataFunction(feature.properties.country); //Dispatch event to set single country
+
+      map.flyTo(latlng, 5); //Fly to a marker, zooming in with zoom level of 3
+    }); //Handle Clicking a map
+
+    return marker;
   };
 }
 
@@ -29,14 +45,17 @@ function getMarkerProps(feature, dataType) {
   } = feature;
 
   switch (dataType) {
-    case "Active Cases":
+    case "Active":
       return {
         size: active,
         class: "icon-active",
         html: `
       <div>
           <h2>${province ? `${province},` : ""} ${country}</h2>
-          <p>Active Cases: ${commify(active)}</p>
+          <p>
+            <span class="color-active">${commify(active)}</span> 
+              Active Cases
+          </p>
       </div>
       `,
       };
@@ -48,7 +67,11 @@ function getMarkerProps(feature, dataType) {
         html: `
       <div>
           <h2>${province ? `${province},` : ""} ${country}</h2>
-          <p>Tests: ${commify(tests)}</p>
+          <p>
+            <span class="color-active">${commify(
+              tests
+            )}</span> Tests carried out
+          </p>
       </div>
       `,
       };
@@ -60,10 +83,12 @@ function getMarkerProps(feature, dataType) {
         html: `
       <div>
           <h2>${province ? `${province},` : ""} ${country}</h2>
-          <p>Case-Fatality Ratio: ${(
-            (stats.deaths * 100) /
-            stats.confirmed
-          ).toFixed(2)}%</p>
+          <p>
+            <span class="color-deaths">
+              ${((stats.deaths * 100) / stats.confirmed).toFixed(
+                2
+              )}</span>% Case-Fatality Ratio
+          </p>
       </div>
       `,
       };
@@ -75,9 +100,18 @@ function getMarkerProps(feature, dataType) {
         html: `
       <div>
           <h2>${province ? `${province},` : ""} ${country}</h2>
-          <p>Cases: ${commify(stats.confirmed)}</p>
-          <p>Deaths: ${commify(stats.deaths)}</p>
-          <p>Recovered: ${commify(stats.recovered)}</p>
+          <p>
+            <span class="color-active">${commify(
+              stats.confirmed
+            )}</span> Cases</p>
+          <p>
+            <span class="color-deaths">${commify(
+              stats.deaths
+            )}</span> Deaths</p>
+          <p>
+            <span class="color-recovered">${commify(
+              stats.recovered
+            )}</span> Recovered</p>
       </div>
       `,
       };
