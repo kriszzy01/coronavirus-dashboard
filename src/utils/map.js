@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { map } from "leaflet";
 import { iconSizeByCases, commify, iconSizeByPercentage } from "./helpers";
 
 const accessToken = process.env.REACT_APP_TOKEN;
@@ -6,6 +6,19 @@ const accessToken = process.env.REACT_APP_TOKEN;
 export const tileLayer = `https://api.mapbox.com/styles/v1/kriszzy01/ckkcxmtt12ax117mn75yqjd4a/tiles/256/{z}/{x}/{y}@2x?access_token=${accessToken}`;
 export const attribution =
   'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+
+export function dynamicFlyTo(targetData, countries, mapInstance) {
+  let targetCountry = countries[targetData];
+
+  if (targetCountry) {
+    const {
+      coordinates: { latitude, longitude },
+    } = countries[targetData];
+
+    const latlng = L.latLng(+latitude, +longitude);
+    mapInstance.flyTo(latlng, 5);
+  }
+}
 
 export function geoJsonToMarkers(geoJson, dataType, option) {
   return L.geoJSON(geoJson, {
