@@ -1,5 +1,9 @@
 [data-scroll] {
   overflow-y: hidden;
+
+  @media screen and (min-width: 49em) {
+    padding-right: 10px;
+  }
 }
 
 .dropdown {
