@@ -1,14 +1,21 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useMap } from "react-leaflet";
-import { getProvince, getMapData, getCountry } from "../selectors";
 import { setMapData } from "../slices/map";
 import { setTargetData } from "../slices/map";
+
+import {
+  getProvince,
+  getMapData,
+  getCountry,
+  getTargetData,
+} from "../selectors";
 
 import {
   geoJsonToMarkers,
   featuresToGeoJSON,
   featuresToGeoJsonArray,
+  dynamicFlyTo,
 } from "../utils";
 
 const tabItems = ["Cummulative", "Active", "Tests", "Case-Fatality Ratio"];
@@ -20,6 +27,7 @@ export const MapControls: React.FC = () => {
   const provinces = useSelector(getProvince);
   const countries = useSelector(getCountry);
   const activeData = useSelector(getMapData);
+  const targetData = useSelector(getTargetData);
 
   const provinceGeoJson = featuresToGeoJsonArray(provinces);
   const countriesGeoJson = featuresToGeoJsonArray(countries);
@@ -30,7 +38,8 @@ export const MapControls: React.FC = () => {
       : countriesGeoJson;
 
   const handleMarkerClick = (data: string) => dispatch(setTargetData(data));
-  
+  dynamicFlyTo(targetData, countries, mapInstance); //Map flies to the cordinates of a location, which is determined by the selected country
+
   const locationsGeoJsonLayers = geoJsonToMarkers(
     featuresToGeoJSON(geoJsonArray),
     activeData,
@@ -39,7 +48,7 @@ export const MapControls: React.FC = () => {
 
   const handleGlobeButton = () => {
     mapInstance.setView([20, 0], 2);
-    dispatch(setTargetData("global"));
+    dispatch(setTargetData("Global"));
   };
 
   //App re-renders only when activeData changes, hence no need for dependency array
@@ -54,7 +63,7 @@ export const MapControls: React.FC = () => {
 
   return (
     <div className="mapcontrols">
-      <div>
+      <div className="mapcontrols__buttons">
         {tabItems.map((item) => (
           <button
             type="button"
@@ -67,7 +76,20 @@ export const MapControls: React.FC = () => {
         ))}
       </div>
 
-      <button type="button" onClick={handleGlobeButton}>
+      {/*Select is used on mobile only*/}
+      <select
+        className="mapcontrols__dropdown"
+        value={activeData}
+        onChange={(event) => dispatch(setMapData(event.target.value))}
+      >
+        {tabItems.map((item) => (
+          <option value={item} key={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+
+      <button type="button" aria-label="view globe" onClick={handleGlobeButton}>
         <svg width="20" height="20">
           <path
             fill="white"
