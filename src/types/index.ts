@@ -15,17 +15,24 @@ interface Stats {
   confirmed: number;
   deaths: number;
   recovered: number;
+  todayCases: number;
+  todayDeaths: number;
+  todayRecovered: number;
 }
 
 interface CountryInfo {
   lat: number;
   long: number;
+  flag: string;
 }
 
 export interface Country {
   cases: number;
   deaths: number;
   recovered: number;
+  todayCases: number;
+  todayDeaths: number;
+  todayRecovered: number;
   tests: number;
   active: number;
   country: string;
@@ -33,10 +40,12 @@ export interface Country {
 }
 
 export interface Province extends Stats {
+  active: number;
   country: string;
   stats: Stats;
   coordinates: Coordinates;
   province: string;
+  flag: string;
 }
 
 export interface Gemometry {
@@ -60,10 +69,29 @@ export interface WorldWide extends Stats {
   active: number;
 }
 
-export interface StatisticsState {
+export interface HistoricalAll {
+  cases: Record<string, number>;
+  deaths: Record<string, number>;
+  recovered: Record<string, number>;
+}
+
+export interface CountryState {
   status: "idle" | "pending" | "success" | "failure";
   error: null | string;
-  countries: Record<string, Country>;
-  worldwide: WorldWide;
-  province: Record<string, Province>;
+  cummulative: Record<string, Province>;
+  historical: any;
+}
+
+export interface ProvinceState {
+  status: "idle" | "pending" | "success" | "failure";
+  error: null | string;
+  cummulative: Record<string, Province>;
+  historical: any;
+}
+
+export interface WorldwideState {
+  status: "idle" | "pending" | "success" | "failure";
+  error: null | string;
+  cummulative: WorldWide;
+  historical: HistoricalAll;
 }
