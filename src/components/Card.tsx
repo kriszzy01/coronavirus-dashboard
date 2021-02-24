@@ -11,8 +11,8 @@ export const Card: React.FC<PillProps> = ({ title, today, total }) => {
   return (
     <div className="card">
       <h2 className={`color-${title?.toLowerCase()}`}>{title}</h2>
-      <p>{commify(today)} Today</p>
-      <p>{commify(total)} Total</p>
+      <p>{commify(today)} <span>Today</span></p>
+      <p>{commify(total)} <span>Total</span></p>
     </div>
   );
 };
