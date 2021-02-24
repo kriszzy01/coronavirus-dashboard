@@ -1,28 +1,44 @@
-.searchbar {
-  position: relative;
-  flex-basis: 40%;
-  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
-  border-radius: 0.25rem;
+.searchbar-container {
+  display: none;
+  align-items: center;
+  flex-basis: 100%;
 
-  > :first-child {
+  @media screen and (min-width: 49em) {
     display: flex;
-    align-items: center;
-    background-color: var(--color-light);
-    border-radius: 0.25rem;
+    flex-basis: 40%;
+
+    [aria-label*="searchbar"] {
+      display: none;
+    }
   }
 
-  &:focus-within {
-    /*flex-basis: 35%;*/
-    box-shadow: 0px 0px 0px 1px var(--color-primary);
+  .searchbar {
+    width: 100%;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    border-radius: 0.25rem;
+    margin: 0 1rem;
 
-    svg {
-        >:last-child {
-            fill: var(--color-primary) 
-        }
+    > :first-child {
+      display: flex;
+      align-items: center;
+      background-color: var(--color-light);
+      border-radius: 0.25rem;
+
+      span {
+        margin-left: 0.5rem;
+      }
     }
 
-    @media screen and (max-width: 48em) {
-      /*flex-basis: 90%;*/
+    &:focus-within {
+      /*flex-basis: 35%;*/
+      box-shadow: 0px 0px 0px 1px var(--color-primary);
+
+      svg {
+        > :last-child {
+          fill: var(--color-primary);
+        }
+      }
     }
   }
 }
