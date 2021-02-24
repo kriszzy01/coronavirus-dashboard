@@ -1,5 +1,6 @@
 .mapcontrols {
-  > :first-child {
+  &__buttons,
+  &__dropdown {
     position: absolute;
 
     [type="button"] {
@@ -15,12 +16,30 @@
         background-color: var(--color-light);
         color: var(--color-neutral);
       }
+
+      &[data-selected="true"] {
+        box-shadow: 0 3px 0 0 var(--color-primary);
+      }
     }
   }
 
   > :last-child {
     position: absolute;
-    right: 0.5rem;
+    right: 1rem;
     top: 1rem;
+  }
+
+  &__buttons {
+    @media screen and (max-width: 48em) {
+      display: none;
+    }
+  }
+
+  &__dropdown {
+    margin: 0.1rem;
+    
+    @media screen and (min-width: 49em) {
+      display: none;
+    }
   }
 }

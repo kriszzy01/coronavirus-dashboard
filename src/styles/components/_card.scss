@@ -1,20 +1,26 @@
 .card {
+  text-align: center;
   background-color: var(--color-neutral);
-  color: var(--color-dark);
   padding: 1rem 0.5rem;
-  width: 170px;
+  width: 100%;
+  font-weight: bold;
+  
+  p {
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
 
-  h2 {
-    &.active {
-      color: var(--color-active);
+    span {
+      font-size: 0.8em;
+      font-style: italic;
     }
+  }
 
-    &.recovered {
-      color: var(--color-recovered);
-    }
+  @media screen and (min-width: 49em) {
+    width: 170px;
+    text-align: left;
 
-    &.deaths {
-      color: var(--color-deaths);
+    p {
+      font-size: 0.8rem;
     }
   }
 }
