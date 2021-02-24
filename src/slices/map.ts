@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = { activeData: "Cummulative Cases" };
+const initialState = {
+  activeData: "Cummulative",
+  targetData: "Global",
+};
 
 const map = createSlice({
   name: "mapData",
@@ -9,9 +12,12 @@ const map = createSlice({
     setMapData(state, { payload }: PayloadAction<string>) {
       state.activeData = payload;
     },
+    setTargetData(state, { payload }: PayloadAction<string>) {
+      state.targetData = payload;
+    },
   },
 });
 
-export const { setMapData } = map.actions;
+export const { setMapData, setTargetData } = map.actions;
 
 export default map.reducer;
