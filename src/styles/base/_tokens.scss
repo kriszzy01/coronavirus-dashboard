@@ -1,0 +1,33 @@
+//Color tokens
+.color-deaths {
+  color: var(--color-deaths);
+}
+
+.color-active {
+  color: var(--color-active);
+}
+
+.color-recovered {
+  color: var(--color-recovered);
+}
+
+.color-primary {
+  color: var(--color-primary);
+}
+
+//Background-color
+.bg-active {
+  background: var(--color-active);
+}
+
+.bg-tests {
+  background: var(--color-primary);
+}
+
+.bg-ratio {
+  background: var(--color-neutral);
+}
+
+.bg-deaths {
+  background: var(--color-deaths);
+}
