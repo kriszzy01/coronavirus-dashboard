@@ -1,13 +1,17 @@
 import React from "react";
 import { TileLayer, ZoomControl } from "react-leaflet";
 import { useSelector } from "react-redux";
-import { getWorldwide } from "../selectors";
+import { getWorldwide, getCountry, getTargetData } from "../selectors";
 import { Card } from "../components/Card";
 import { MapControls } from "../components/MapControls";
 import { Map } from "../blocks/Map";
-import { attribution, commify, tileLayer } from "../utils";
+import { attribution, commify, tileLayer, setTargetData } from "../utils";
 
 export const DataSummary: React.FC = () => {
+  const world = useSelector(getWorldwide);
+  const countries = useSelector(getCountry);
+  const targetData = useSelector(getTargetData);
+
   const {
     active,
     cases,
@@ -18,7 +22,7 @@ export const DataSummary: React.FC = () => {
     todayRecovered,
     updated,
     affectedCountries,
-  } = useSelector(getWorldwide);
+  } = setTargetData(world, countries, targetData);
 
   return (
     <div className="summary">
@@ -28,10 +32,10 @@ export const DataSummary: React.FC = () => {
           <Card title="Recovered" today={todayRecovered} total={recovered} />
           <Card title="Deaths" today={todayDeaths} total={deaths} />
 
-          <div className="card">
+          {/*<div className="card">
             <p>Last Updated: {new Date(updated).toLocaleString()}</p>
             <p>Affected Countries: {affectedCountries}</p>
-          </div>
+          </div>*/}
         </div>
 
         <Map>
@@ -40,11 +44,13 @@ export const DataSummary: React.FC = () => {
           <MapControls />
         </Map>
       </div>
-      
+
       <div className="summary__text">
         <h3>
-          <span>Globally</span>, as of{" "}
-          <span>{new Date(updated).toString()}</span>, there has been{" "}
+          <span>
+            {targetData === "Global" ? "Globally" : `In ${targetData}`}
+          </span>
+          , as of <span>{new Date(updated).toString()}</span>, there has been{" "}
           <span className="color-active">{commify(cases)} confirmed cases</span>{" "}
           of COVID-19, including{" "}
           <span className="color-deaths">{commify(deaths)} deaths</span>{" "}
