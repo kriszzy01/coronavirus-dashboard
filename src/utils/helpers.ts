@@ -1,4 +1,5 @@
-import { Country } from "../types";
+import { Country, Province, WorldWide } from "../types";
+import { countryNames } from "./data";
 
 export function locationToFeature(location: any) {
   return {
@@ -57,21 +58,22 @@ export function customCountryPayload(payload: Country[]) {
     //Since we get data from different api's, I decided to use the format of one api response
     const {
       countryInfo: { lat, long, flag },
-      cases,
-      recovered,
-      deaths,
-      country,
-      tests,
-      active,
     } = next;
 
     //Creating the custom payload to match the response of only one api.
     const customPayload = {
-      country,
-      active,
-      tests,
+      country: next.country,
+      active: next.active,
+      tests: next.tests,
       flag,
-      stats: { deaths, recovered, confirmed: cases },
+      stats: {
+        deaths: next.deaths,
+        recovered: next.recovered,
+        confirmed: next.cases,
+        todayCases: next.todayCases,
+        todayDeaths: next.todayDeaths,
+        todayRecovered: next.todayRecovered,
+      },
       coordinates: { latitude: lat, longitude: long },
     };
 
@@ -124,4 +126,78 @@ export function iconSizeByPercentage(value: number) {
     return [14, 14];
   }
   return [16, 16];
+}
+
+export function setTargetData(
+  worldwide: WorldWide,
+  countries: Record<string, Province>,
+  targetData: string
+) {
+  let targetCountry = countries[targetData];
+
+  const { affectedCountries, updated } = worldwide;
+  let customWorldwide;
+
+  if (targetCountry) {
+    let stats = targetCountry.stats;
+
+    customWorldwide = {
+      active: targetCountry.active,
+      cases: stats.confirmed,
+      deaths: stats.deaths,
+      recovered: stats.recovered,
+      todayCases: stats.todayCases,
+      todayDeaths: stats.todayDeaths,
+      todayRecovered: stats.todayRecovered,
+      updated,
+      affectedCountries,
+    };
+  }
+
+  if (targetData === "Global") {
+    customWorldwide = worldwide;
+  }
+
+  return customWorldwide as WorldWide;
+}
+
+function matchCountryNames(province: Province[]) {
+  //The two api's used return varying country names. This function matches the varying country names.
+  //It is only necessacry since we use two different api's.
+
+  let newResponse: Province[] = [];
+
+  province.forEach((resp) => {
+    if (
+      resp.country === "Kosovo" ||
+      resp.province === "Unknown" ||
+      resp.province === "Recovered"
+    ) {
+      return;
+    }
+
+    if (!countryNames[resp.country]) {
+      newResponse.push(resp);
+    }
+
+    if (countryNames[resp.country]) {
+      resp.country = countryNames[resp.country];
+      newResponse.push(resp);
+    }
+  });
+
+  return newResponse;
+}
+
+export function customProvincePayload(payload: Province[]) {
+  let newPayload = matchCountryNames(payload);
+
+  const normalizedPayload = newPayload.reduce((prev, next) => {
+    return {
+      ...prev,
+      [`${next.province ? `${next.province},` : ""} ${next.country}`]: next,
+    };
+  }, {});
+
+  return normalizedPayload;
 }
