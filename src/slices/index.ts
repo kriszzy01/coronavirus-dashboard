@@ -1,10 +1,14 @@
 import { combineReducers } from "redux";
-import statisticsReducer from "./statistics";
+import worldwideReducer from "./worldwide";
 import mapDataReducer from "./map";
+import countryReducer from "./country";
+import provinceReducer from "./province";
 
 const rootReducer = combineReducers({
-  statistics: statisticsReducer,
+  worldwide: worldwideReducer,
   mapData: mapDataReducer,
+  country: countryReducer,
+  province: provinceReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
