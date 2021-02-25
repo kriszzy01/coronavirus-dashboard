@@ -47,7 +47,9 @@ export const MapControls: React.FC = () => {
   );
 
   const handleGlobeButton = () => {
-    mapInstance.setView([20, 0], 2);
+    const zoom = window.innerWidth > 700 ? 2 : 1;
+    
+    mapInstance.setView([20, 0], zoom);
     dispatch(setTargetData("Global"));
   };
 
@@ -75,19 +77,6 @@ export const MapControls: React.FC = () => {
           </button>
         ))}
       </div>
-
-      {/*Select is used on mobile only*/}
-      <select
-        className="mapcontrols__dropdown"
-        value={activeData}
-        onChange={(event) => dispatch(setMapData(event.target.value))}
-      >
-        {tabItems.map((item) => (
-          <option value={item} key={item}>
-            {item}
-          </option>
-        ))}
-      </select>
 
       <button type="button" aria-label="view globe" onClick={handleGlobeButton}>
         <svg width="20" height="20">
