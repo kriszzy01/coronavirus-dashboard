@@ -11,13 +11,14 @@ export const Map: React.FC = ({ children }) => {
   const southWest = new L.LatLng(-90, -180); //South-west point for the bound
   const northEast = new L.LatLng(90, 180); //North-east point for the bound
   const bounds = L.latLngBounds(southWest, northEast); //Sets and restricts the map view to a geopgraphical region, in this case the world
+  const zoom = window.innerWidth > 700 ? 2 : 1; //Set the zoom depending on the device width
 
   return (
     <div>
       <MapContainer
         center={[20, 0]}
-        zoom={2}
-        minZoom={2}
+        zoom={zoom}
+        minZoom={zoom}
         zoomControl={false}
         maxBounds={bounds}
         maxBoundsViscosity={0.75}
