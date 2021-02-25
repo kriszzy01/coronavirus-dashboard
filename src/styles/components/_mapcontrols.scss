@@ -1,6 +1,5 @@
 .mapcontrols {
-  &__buttons,
-  &__dropdown {
+  &__buttons {
     position: absolute;
 
     [type="button"] {
@@ -31,14 +30,6 @@
 
   &__buttons {
     @media screen and (max-width: 48em) {
-      display: none;
-    }
-  }
-
-  &__dropdown {
-    margin: 0.1rem;
-    
-    @media screen and (min-width: 49em) {
       display: none;
     }
   }
