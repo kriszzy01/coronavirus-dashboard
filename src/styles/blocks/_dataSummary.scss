@@ -23,13 +23,10 @@
   }
 
   &__text {
-    margin-top: 4.5rem;
+    max-width: 82rem;
+    margin: 5rem auto;
     padding: 1.5rem 1rem;
     text-align: justify;
-
-    span:not([class]) {
-      color: var(--color-primary);
-    }
 
     @media screen and (min-width: 49em) {
       margin-top: 0;
