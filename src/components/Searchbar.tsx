@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import { getCountry } from "../selectors";
 import { Dropdown } from "./Dropdown";
+import { useSearchbar } from "../hooks";
 
 interface SearchbarProps {
   setOpenSearchbar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Searchbar: React.FC<SearchbarProps> = ({ setOpenSearchbar }) => {
-  const [searchInput, setSearchInput] = useState("");
+  const searchbarRef = useRef<HTMLDivElement>(null);
+  const [searchInput, setSearchInput] = useSearchbar("", searchbarRef);
+
   const countries = useSelector(getCountry);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchInput(event.target.value);
+
+  const handleCloseSearchBar = () => {
+    setSearchInput("");
+    setOpenSearchbar(false);
+  };
 
   const searchResult = Object.values(countries).filter(({ country }) =>
     searchInput === ""
@@ -21,7 +29,7 @@ export const Searchbar: React.FC<SearchbarProps> = ({ setOpenSearchbar }) => {
   );
 
   return (
-    <div className="searchbar-container">
+    <div className="searchbar-container" ref={searchbarRef}>
       <div className="searchbar">
         <div>
           <span aria-hidden="true" style={{ height: "24px" }}>
@@ -50,7 +58,7 @@ export const Searchbar: React.FC<SearchbarProps> = ({ setOpenSearchbar }) => {
         type="button"
         aria-label="close searchbar"
         style={{ height: "24px" }}
-        onClick={() => setOpenSearchbar(false)}
+        onClick={handleCloseSearchBar}
       >
         <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
           <path d="M0 0h24v24H0z" fill="none"></path>
