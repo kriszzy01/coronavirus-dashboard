@@ -5,7 +5,6 @@ import { setMapData } from "../slices/map";
 import { setTargetData } from "../slices/map";
 
 import {
-  getProvince,
   getMapData,
   getCountry,
   getTargetData,
@@ -24,18 +23,13 @@ export const MapControls: React.FC = () => {
   const mapInstance = useMap(); //Instance of the map object
   const dispatch = useDispatch();
 
-  const provinces = useSelector(getProvince);
   const countries = useSelector(getCountry);
   const activeData = useSelector(getMapData);
   const targetData = useSelector(getTargetData);
 
-  const provinceGeoJson = featuresToGeoJsonArray(provinces);
   const countriesGeoJson = featuresToGeoJsonArray(countries);
 
-  const geoJsonArray =
-    activeData.includes("Cummulative") || activeData.includes("Ratio")
-      ? provinceGeoJson
-      : countriesGeoJson;
+  const geoJsonArray = countriesGeoJson;
 
   const handleMarkerClick = (data: string) => dispatch(setTargetData(data));
   dynamicFlyTo(targetData, countries, mapInstance); //Map flies to the cordinates of a location, which is determined by the selected country
@@ -48,7 +42,7 @@ export const MapControls: React.FC = () => {
 
   const handleGlobeButton = () => {
     const zoom = window.innerWidth > 700 ? 2 : 1;
-    
+
     mapInstance.setView([20, 0], zoom);
     dispatch(setTargetData("Global"));
   };

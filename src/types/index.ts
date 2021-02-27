@@ -82,16 +82,14 @@ export interface CountryState {
   historical: any;
 }
 
-export interface ProvinceState {
-  status: "idle" | "pending" | "success" | "failure";
-  error: null | string;
-  cummulative: Record<string, Province>;
-  historical: any;
-}
-
 export interface WorldwideState {
   status: "idle" | "pending" | "success" | "failure";
   error: null | string;
   cummulative: WorldWide;
   historical: HistoricalAll;
+}
+
+export interface ChartData {
+  x: string;
+  y: number;
 }

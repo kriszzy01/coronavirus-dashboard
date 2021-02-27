@@ -1,5 +1,4 @@
 import { Country, Province, WorldWide } from "../types";
-import { countryNames } from "./data";
 
 export function locationToFeature(location: any) {
   return {
@@ -161,43 +160,17 @@ export function setTargetData(
   return customWorldwide as WorldWide;
 }
 
-function matchCountryNames(province: Province[]) {
-  //The two api's used return varying country names. This function matches the varying country names.
-  //It is only necessacry since we use two different api's.
+export function getSearchResults(
+  countries: Record<string, Province>,
+  searchTerm: string
+) {
+  const countriesArray = Object.values(countries);
 
-  let newResponse: Province[] = [];
-
-  province.forEach((resp) => {
-    if (
-      resp.country === "Kosovo" ||
-      resp.province === "Unknown" ||
-      resp.province === "Recovered"
-    ) {
-      return;
+  return countriesArray.filter(({ country }) => {
+    if (searchTerm === "") {
+      return null;
     }
 
-    if (!countryNames[resp.country]) {
-      newResponse.push(resp);
-    }
-
-    if (countryNames[resp.country]) {
-      resp.country = countryNames[resp.country];
-      newResponse.push(resp);
-    }
+    return country.toLowerCase().startsWith(searchTerm.toLowerCase());
   });
-
-  return newResponse;
-}
-
-export function customProvincePayload(payload: Province[]) {
-  let newPayload = matchCountryNames(payload);
-
-  const normalizedPayload = newPayload.reduce((prev, next) => {
-    return {
-      ...prev,
-      [`${next.province ? `${next.province},` : ""} ${next.country}`]: next,
-    };
-  }, {});
-
-  return normalizedPayload;
 }
