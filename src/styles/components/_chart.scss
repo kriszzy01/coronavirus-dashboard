@@ -1,0 +1,47 @@
+.chart {
+  position: relative;
+  margin-top: 1.7rem;
+
+  p {
+    letter-spacing: 0px;
+    > :first-child {
+      font-size: 1.25rem;
+    }
+
+    > :last-child {
+      font-size: 0.8rem;
+    }
+  }
+
+  &__container {
+    display: flex;
+    cursor: pointer; 
+    position: relative;
+    height: 150px;
+    width: 100%;
+
+    @media screen and (min-width: 49em) {
+      height: 300px;
+      width: 80%;
+      margin-left: auto;
+    }
+  }
+
+  @media screen and (min-width: 49em) {
+    margin-top: 3rem;
+    box-shadow: 0 0px 2px 0 rgba(60, 64, 67, 0.3),
+      0 0px 4px rgba(60, 64, 67, 0.15);
+    padding: 2rem 1rem 1rem 2rem;
+
+    p {
+      position: absolute;
+      > :first-child {
+        font-size: 3rem;
+      }
+
+      > :last-child {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
