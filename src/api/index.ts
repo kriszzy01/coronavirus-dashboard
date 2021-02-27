@@ -37,7 +37,7 @@ export const getWorldWide = async () => {
 };
 
 export const getAllHistorical = async () => {
-  const request_url = "https://disease.sh/v3/covid-19/historical/all?lastdays=360";
+  const request_url = "https://disease.sh/v3/covid-19/historical/all?lastdays=270";
 
   try {
     const response = await axios.get(request_url);
