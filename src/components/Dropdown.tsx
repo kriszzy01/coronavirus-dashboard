@@ -16,6 +16,7 @@ export const Dropdown: React.FC<Dropdown> = ({
 }) => {
   const dispatch = useDispatch();
   const isSearchResults = searchResult.length > 0;
+  const isSearchTerm = searchTerm !== "";
 
   const handleClick = (country: string) => {
     dispatch(setTargetData(country));
@@ -31,7 +32,7 @@ export const Dropdown: React.FC<Dropdown> = ({
     return () => {
       document.querySelector("body")?.removeAttribute("data-scroll");
     };
-  }, [searchTerm !== ""]);
+  }, [searchTerm, isSearchTerm]);
 
   return (
     <div className="dropdown" id="dropdown" data-expanded={searchTerm !== ""}>
