@@ -1,4 +1,4 @@
-import L, { map } from "leaflet";
+import L from "leaflet";
 import { iconSizeByCases, commify, iconSizeByPercentage } from "./helpers";
 
 const accessToken = process.env.REACT_APP_TOKEN;
@@ -17,6 +17,17 @@ export function dynamicFlyTo(targetData, countries, mapInstance) {
 
     const latlng = L.latLng(+latitude, +longitude);
     mapInstance.flyTo(latlng, 5);
+
+    mapInstance.eachLayer(({ feature, _tooltip }) => {
+      let prop = feature?.properties;
+
+      if (prop?.country === targetData) {
+        L.popup()
+          .setLatLng(latlng)
+          .setContent(_tooltip?._content)
+          .addTo(mapInstance);
+      }
+    });
   }
 }
 
@@ -39,13 +50,14 @@ function markerCreator(dataType, targetDataFunction) {
       }),
     });
 
-    marker.bindPopup(markerProps.html); //Add popup html markup
+    const popup = L.popup().setLatLng(latLng).setContent(markerProps.html); //Create popup
     marker.bindTooltip(markerProps.html); //Add tooltil to display on marker hover
 
     marker.on("click", ({ target: { _map: map, feature }, latlng }) => {
       targetDataFunction(feature.properties.country); //Dispatch event to set single country
-
       map.flyTo(latlng, 5); //Fly to a marker, zooming in with zoom level of 3
+
+      map.once("moveend", () => popup.openOn(map)); //Add popup after moving to marker
     }); //Handle Clicking a map
 
     return marker;
