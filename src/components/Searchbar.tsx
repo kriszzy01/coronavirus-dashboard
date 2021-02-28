@@ -1,18 +1,31 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { getCountry } from "../selectors";
 import { Dropdown } from "./Dropdown";
 import { useSearchbar } from "../hooks";
+import { getSearchResults } from "../utils";
 
 interface SearchbarProps {
   setOpenSearchbar: React.Dispatch<React.SetStateAction<boolean>>;
+  openSearchbar: boolean;
 }
 
-export const Searchbar: React.FC<SearchbarProps> = ({ setOpenSearchbar }) => {
+export const Searchbar: React.FC<SearchbarProps> = ({
+  setOpenSearchbar,
+  openSearchbar,
+}) => {
   const searchbarRef = useRef<HTMLDivElement>(null);
   const [searchInput, setSearchInput] = useSearchbar("", searchbarRef);
 
   const countries = useSelector(getCountry);
+  const searchResult = getSearchResults(countries, searchInput);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (openSearchbar) {
+      inputRef.current?.focus();
+    }
+  }, [openSearchbar]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchInput(event.target.value);
@@ -22,15 +35,13 @@ export const Searchbar: React.FC<SearchbarProps> = ({ setOpenSearchbar }) => {
     setOpenSearchbar(false);
   };
 
-  const searchResult = Object.values(countries).filter(({ country }) =>
-    searchInput === ""
-      ? null
-      : country.toLowerCase().startsWith(searchInput.toLowerCase())
-  );
-
   return (
     <div className="searchbar-container" ref={searchbarRef}>
-      <div className="searchbar">
+      <div
+        className="searchbar"
+        aria-expanded={searchInput !== ""}
+        aria-controls="dropdown"
+      >
         <div>
           <span aria-hidden="true" style={{ height: "24px" }}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
@@ -44,6 +55,7 @@ export const Searchbar: React.FC<SearchbarProps> = ({ setOpenSearchbar }) => {
             value={searchInput}
             placeholder="Search by Country"
             onChange={handleChange}
+            ref={inputRef}
           />
         </div>
 
@@ -57,7 +69,6 @@ export const Searchbar: React.FC<SearchbarProps> = ({ setOpenSearchbar }) => {
       <button
         type="button"
         aria-label="close searchbar"
-        style={{ height: "24px" }}
         onClick={handleCloseSearchBar}
       >
         <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">

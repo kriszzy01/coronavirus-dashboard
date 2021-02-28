@@ -6,13 +6,13 @@ export const useSearchbar = (
 ) => {
   const [value, setValue] = useState(initialValue);
 
-  const handleClickOutside = (event: any) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setValue("");
-    }
-  };
-
   useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setValue("");
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
