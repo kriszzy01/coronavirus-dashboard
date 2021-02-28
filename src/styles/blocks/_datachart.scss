@@ -1,0 +1,40 @@
+.datachart {
+  max-width: 82rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  @media screen and (min-width: 49em) {
+    margin: 3rem auto;
+  }
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    h3 {
+      font-size: 1.5rem;
+
+      @media screen and (min-width: 49em) {
+        font-size: 2rem;
+      }
+    }
+
+    > :last-child {
+      display: flex;
+      height: fit-content;
+      box-shadow: 0 0px 2px rgba(60, 64, 67, 0.3),
+        0 0px 4px rgba(60, 64, 67, 0.15);
+
+      [data-active] {
+        padding: 0.4rem 1rem;
+        border-radius: .12rem;
+      }
+
+      [data-active="true"] {
+        background-color: var(--color-dark);
+        color: var(--color-neutral);
+      }
+    }
+  }
+}
