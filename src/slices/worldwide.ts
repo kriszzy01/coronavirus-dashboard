@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getWorldWide, getAllHistorical } from "../api";
+import { getHistorical, getStatistics } from "../api";
 
 import { AppThunk, WorldWide, HistoricalAll, WorldwideState } from "../types";
 
@@ -52,7 +52,7 @@ const statistics = createSlice({
 
     fetchWorldWideFailure: fetchFailure,
 
-    /***** Historical Statistics Reducers*****/
+    /***** Historical Reducers*****/
     fetchAllHistoricalStart: fetchStart,
 
     fetchAllHistoricalSuccess(
@@ -84,7 +84,7 @@ export const fetchWorldWide = (): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchWorldWideStart());
 
-    const response = await getWorldWide();
+    const response = await getStatistics();
     dispatch(fetchWorldWideSuccess(response));
   } catch (error) {
     dispatch(fetchWorldWideFailure(error.message));
@@ -95,7 +95,7 @@ export const fetchHistoricalAll = (): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchAllHistoricalStart());
 
-    const response = await getAllHistorical();
+    const response = await getHistorical();
     dispatch(fetchAllHistoricalSuccess(response));
   } catch (error) {
     dispatch(fetchAllHistoricalFailure(error.message));
