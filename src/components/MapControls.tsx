@@ -8,14 +8,11 @@ import {
   getMapData,
   getCountry,
   getTargetData,
+  getCountryHistory,
 } from "../selectors";
 
-import {
-  geoJsonToMarkers,
-  featuresToGeoJSON,
-  featuresToGeoJsonArray,
-  dynamicFlyTo,
-} from "../utils";
+import { geoJsonToMarkers, featuresToGeoJSON, dynamicFlyTo } from "../utils";
+import { fetchCountryHistory } from "../slices/country";
 
 const tabItems = ["Cummulative", "Active", "Tests", "Case-Fatality Ratio"];
 
@@ -24,18 +21,16 @@ export const MapControls: React.FC = () => {
   const dispatch = useDispatch();
 
   const countries = useSelector(getCountry);
+  const countryHistory = useSelector(getCountryHistory);
   const activeData = useSelector(getMapData);
   const targetData = useSelector(getTargetData);
 
-  const countriesGeoJson = featuresToGeoJsonArray(countries);
-
-  const geoJsonArray = countriesGeoJson;
-
-  const handleMarkerClick = (data: string) => dispatch(setTargetData(data));
   dynamicFlyTo(targetData, countries, mapInstance); //Map flies to the cordinates of a location, which is determined by the selected country
 
+  const handleMarkerClick = (data: string) => dispatch(setTargetData(data));
+
   const locationsGeoJsonLayers = geoJsonToMarkers(
-    featuresToGeoJSON(geoJsonArray),
+    featuresToGeoJSON(countries),
     activeData,
     handleMarkerClick
   );
@@ -56,6 +51,14 @@ export const MapControls: React.FC = () => {
       locationsGeoJsonLayers.removeFrom(mapInstance); //Clear all markers from map
     };
   });
+
+  //Fetch Historical Data for selected country
+  useEffect(() => {
+    if (targetData !== "Global" && !countryHistory[targetData]) {
+      //Conditions neccessary to prevent calling fetch when country history already exists
+      dispatch(fetchCountryHistory(targetData)); 
+    }
+  }, [targetData, dispatch]);
 
   return (
     <div className="mapcontrols">
