@@ -16,18 +16,15 @@ export function locationToFeature(location: any) {
   };
 }
 
-export function featuresToGeoJSON(featuresArray: any) {
-  return {
-    type: "FeatureCollection",
-    features: featuresArray,
-  };
-}
-
-export function featuresToGeoJsonArray(featuresObject: any) {
-  //Converts an object tp an array of geoJSON features
-  return Object.values(featuresObject).map((feature) =>
+export function featuresToGeoJSON(featuresObject: any) {
+  const geoJsonArray = Object.values(featuresObject).map((feature) =>
     locationToFeature(feature)
   );
+
+  return {
+    type: "FeatureCollection",
+    features: geoJsonArray,
+  };
 }
 
 export function commify(value: number) {
