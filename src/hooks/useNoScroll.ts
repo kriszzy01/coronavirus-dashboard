@@ -10,5 +10,5 @@ export const useNoScroll = (dependencies: any[]) => {
     return () => {
       document.querySelector("body")?.removeAttribute("data-scroll");
     };
-  }, dependencies);
+  }, [dependencies]);
 };
