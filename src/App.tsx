@@ -1,33 +1,41 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/style.scss";
 
-import { fetchWorldWide } from "./slices/worldwide";
-
+import { fetchWorldWide, fetchHistoricalAll } from "./slices/worldwide";
 import { fetchCountry } from "./slices/country";
-import { fetchProvince } from "./slices/province";
 
 import { Header } from "./blocks/Header";
-import { DataSummary } from "./blocks/DataSummary";
-import { DataChart } from "./blocks/DataChart";
+import { Overview } from "./blocks/Overview";
+import { DataTable } from "./components/DataTable";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProvince());
     dispatch(fetchWorldWide());
     dispatch(fetchCountry());
+    dispatch(fetchHistoricalAll());
   }, [dispatch]);
 
   return (
-    <>
+    <Router>
       <Header />
+
       <main>
-        <DataSummary />
+        <Switch>
+          <Route path="/coronavirus-dashboard" component={Overview} />
+          <Route path="/data-table" component={DataTable} />
+        </Switch>
       </main>
-      <footer></footer>
-    </>
+
+      <footer>
+        <p>
+          Made by <span className="color-active">Chris Dhikhan</span>
+        </p>
+      </footer>
+    </Router>
   );
 };
 
