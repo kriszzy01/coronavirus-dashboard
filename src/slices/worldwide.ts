@@ -17,6 +17,7 @@ const initialState: WorldwideState = {
     updated: 0,
     cases: 0,
     confirmed: 0,
+    tests: 0,
   },
   historical: {
     cases: {},

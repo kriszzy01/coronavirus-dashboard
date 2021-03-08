@@ -42,6 +42,7 @@ export interface Country {
 export interface Province extends Stats {
   active: number;
   country: string;
+  tests: number;
   stats: Stats;
   coordinates: Coordinates;
   province: string;
@@ -67,6 +68,7 @@ export interface WorldWide extends Stats {
   todayDeaths: number;
   todayRecovered: number;
   active: number;
+  tests: number;
 }
 
 export interface HistoricalAll {
@@ -75,11 +77,16 @@ export interface HistoricalAll {
   recovered: Record<string, number>;
 }
 
+export interface CountryHistory {
+  country: string;
+  timeline: HistoricalAll;
+}
+
 export interface CountryState {
   status: "idle" | "pending" | "success" | "failure";
   error: null | string;
   cummulative: Record<string, Province>;
-  historical: any;
+  historical: Record<string, HistoricalAll>;
 }
 
 export interface WorldwideState {
