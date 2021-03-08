@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getCountry } from "../selectors";
 import { Dropdown } from "./Dropdown";
@@ -15,17 +15,13 @@ export const Searchbar: React.FC<SearchbarProps> = ({
   openSearchbar,
 }) => {
   const searchbarRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [searchInput, setSearchInput] = useSearchbar("", searchbarRef);
+  const [startDropdownFocus, setStartDropdownFocus] = useState(false);
 
   const countries = useSelector(getCountry);
   const searchResult = getSearchResults(countries, searchInput);
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (openSearchbar) {
-      inputRef.current?.focus();
-    }
-  }, [openSearchbar]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchInput(event.target.value);
@@ -35,12 +31,29 @@ export const Searchbar: React.FC<SearchbarProps> = ({
     setOpenSearchbar(false);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if ((event.key === "ArrowDown" || event.key === "ArrowUp") && searchInput) {
+      setStartDropdownFocus(true);
+    }
+  };
+
+  useEffect(() => {
+    if (openSearchbar) {
+      inputRef.current?.focus(); //Set focus by clicking the search button on mobile
+    }
+  }, [openSearchbar]);
+
   return (
-    <div className="searchbar-container" ref={searchbarRef}>
+    <div
+      className="searchbar-container"
+      ref={searchbarRef}
+      onKeyDown={handleKeyDown}
+    >
       <div
         className="searchbar"
         aria-expanded={searchInput !== ""}
         aria-controls="dropdown"
+        aria-label="searchbar"
       >
         <div>
           <span aria-hidden="true" style={{ height: "24px" }}>
@@ -55,6 +68,7 @@ export const Searchbar: React.FC<SearchbarProps> = ({
             value={searchInput}
             placeholder="Search by Country"
             onChange={handleChange}
+            onFocus={() => setStartDropdownFocus(false)}
             ref={inputRef}
           />
         </div>
@@ -63,6 +77,7 @@ export const Searchbar: React.FC<SearchbarProps> = ({
           searchResult={searchResult}
           searchTerm={searchInput}
           setSearchTerm={setSearchInput}
+          startDropdownFocus={startDropdownFocus}
         />
       </div>
 

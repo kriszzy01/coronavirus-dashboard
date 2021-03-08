@@ -27,11 +27,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ openMenu, setOpenMenu }) => {
         <a
           href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019"
           target="_blank"
+          rel="noopener noreferrer"
         >
           WHO (COVID-19) Homepage
         </a>
 
-        <a href="https://coronavirus.jhu.edu/map.html" target="_blank">
+        <a
+          href="https://coronavirus.jhu.edu/map.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Johns Hopkins COVID-19 Map
         </a>
       </div>
@@ -41,6 +46,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ openMenu, setOpenMenu }) => {
         <a
           href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/donate"
           target="_blank"
+          rel="noopener noreferrer"
         >
           Donate
         </a>

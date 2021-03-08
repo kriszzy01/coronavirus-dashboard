@@ -47,7 +47,7 @@ export const Chart: React.FC<ChartProps> = ({ type, label, data, id }) => {
         <span>{label[1]}</span>
       </p>
       <div className="chart__container">
-        <canvas id={id}></canvas>
+        <canvas aria-label={`${label[1]} chart`} id={id}></canvas>
       </div>
     </div>
   );
