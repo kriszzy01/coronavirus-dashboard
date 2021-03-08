@@ -2,12 +2,12 @@
   display: none;
   align-items: center;
   flex-basis: 100%;
-  
+
   @media screen and (min-width: 49em) {
     display: flex;
     flex-basis: 40%;
 
-    [aria-label*="searchbar"] {
+    [aria-label="close searchbar"] {
       display: none;
     }
   }

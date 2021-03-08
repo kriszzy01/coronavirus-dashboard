@@ -27,7 +27,9 @@
       margin-left: 0.5rem;
     }
 
-    &:hover {
+    &:hover,
+    &:focus {
+      outline: none;
       background-color: var(--color-light);
     }
   }
