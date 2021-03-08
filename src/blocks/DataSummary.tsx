@@ -21,7 +21,6 @@ export const DataSummary: React.FC = () => {
     todayDeaths,
     todayRecovered,
     updated,
-    affectedCountries,
   } = setTargetData(world, countries, targetData);
 
   return (
@@ -31,11 +30,6 @@ export const DataSummary: React.FC = () => {
           <Card title="Active" today={todayCases} total={active} />
           <Card title="Recovered" today={todayRecovered} total={recovered} />
           <Card title="Deaths" today={todayDeaths} total={deaths} />
-
-          {/*<div className="card">
-            <p>Last Updated: {new Date(updated).toLocaleString()}</p>
-            <p>Affected Countries: {affectedCountries}</p>
-          </div>*/}
         </div>
 
         <Map>
