@@ -58,7 +58,7 @@ export const MapControls: React.FC = () => {
       //Conditions neccessary to prevent calling fetch when country history already exists
       dispatch(fetchCountryHistory(targetData)); 
     }
-  }, [targetData, dispatch]);
+  });
 
   return (
     <div className="mapcontrols">
