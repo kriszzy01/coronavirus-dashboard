@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Searchbar } from "../components/Searchbar";
+import { Sidebar } from "../components/Sidebar";
 
 export const Header: React.FC = () => {
   const [openSearchbar, setOpenSearchbar] = useState(false);
@@ -10,8 +12,9 @@ export const Header: React.FC = () => {
       <div data-searchcountry={openSearchbar}>
         <button
           type="button"
-          aria-labelledby="open menu"
+          aria-labelledby="menu-label"
           aria-expanded={openMenu}
+          aria-controls="sidebar"
           onClick={() => setOpenMenu(!openMenu)}
         >
           <span className="vh" id="menu-label">
@@ -24,8 +27,7 @@ export const Header: React.FC = () => {
         <button
           type="button"
           aria-label="open searchbar"
-          style={{ height: "24px" }}
-          onClick={() => setOpenSearchbar(!openSearchbar)}
+          onClick={() => setOpenSearchbar(true)}
         >
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path d="M0 0h24v24H0z" fill="none"></path>
@@ -33,13 +35,18 @@ export const Header: React.FC = () => {
           </svg>
         </button>
 
-        <Searchbar setOpenSearchbar={setOpenSearchbar} />
+        <Searchbar
+          setOpenSearchbar={setOpenSearchbar}
+          openSearchbar={openSearchbar}
+        />
 
-        <nav>
-          <a role="presentation">Overview</a>
-          <a role="presentation">Data Table</a>
+        <nav className="desktop">
+          <NavLink to="/coronavirus-dashboard">Overview</NavLink>
+          <NavLink to="/data-table">Data Table</NavLink>
         </nav>
       </div>
+
+      <Sidebar openMenu={openMenu} setOpenMenu={setOpenMenu} />
     </header>
   );
 };
