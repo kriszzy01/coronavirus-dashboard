@@ -8,6 +8,8 @@
 @import "./blocks/map";
 @import "./blocks/header";
 @import "./blocks/dataSummary";
+@import "./blocks/datachart";
+@import "./blocks/datatable";
 
 //Components
 @import "./components/toggleButton";
@@ -15,3 +17,5 @@
 @import "./components/searchbar";
 @import "./components/dropdown";
 @import "./components/mapcontrols";
+@import "./components/chart.scss";
+@import "./components/sidebar";
