@@ -49,13 +49,8 @@ export const Searchbar: React.FC<SearchbarProps> = ({
       ref={searchbarRef}
       onKeyDown={handleKeyDown}
     >
-      <div
-        className="searchbar"
-        aria-expanded={searchInput !== ""}
-        aria-controls="dropdown"
-        aria-label="searchbar"
-      >
-        <div>
+      <div className="searchbar">
+        <form role="search">
           <span aria-hidden="true" style={{ height: "24px" }}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
               <path d="M0 0h24v24H0z" fill="none"></path>
@@ -64,14 +59,17 @@ export const Searchbar: React.FC<SearchbarProps> = ({
           </span>
 
           <input
-            type="text"
+            type="search"
+            aria-label="Search for country"
+            aria-expanded={searchInput !== ""}
+            aria-controls="dropdown"
             value={searchInput}
             placeholder="Search by Country"
             onChange={handleChange}
             onFocus={() => setStartDropdownFocus(false)}
             ref={inputRef}
           />
-        </div>
+        </form>
 
         <Dropdown
           searchResult={searchResult}

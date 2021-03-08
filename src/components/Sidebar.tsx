@@ -14,7 +14,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ openMenu, setOpenMenu }) => {
     <nav
       id="sidebar"
       className="sidebar"
-      aria-hidden={!openMenu}
       data-expanded={openMenu}
       onClick={() => setOpenMenu(false)}
     >
